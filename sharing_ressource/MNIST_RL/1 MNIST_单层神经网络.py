@@ -6,7 +6,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import pickle
 
 
-mnist = input_data.read_data_sets("D:/DISK e/VB and C/Python/MNist/Material/",one_hot=True)
+mnist = input_data.read_data_sets("~/MachineLearning/dataSet", one_hot=True)
 
 
 # 1 定义算法公式，也就是神经网络Forward时的计算

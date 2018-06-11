@@ -2,18 +2,18 @@ import tensorflow as tf
 from skimage import io, transform
 import numpy as np
 # 模型调用方法参考：https://www.2cto.com/kf/201707/654487.html
+import scipy.misc
 
-path1 = "/home/yangguang/Downloads/t81.jpg"
+
+path1 = "/home/yangguang/machineLearning/learn_machineLearning/Tensorflow_learning/MNIST/t8.jpg"
 
 
 def read_one_image(path):
     img = io.imread(path, as_grey=True)  # just read gray channel
-    img = transform.resize(img, (1, 784))
+    img = img.reshape(1, 784)
     return np.asarray(img)
 
-
 data = read_one_image(path1)
-
 
 sess = tf.InteractiveSession()
 sess.run(tf.global_variables_initializer())

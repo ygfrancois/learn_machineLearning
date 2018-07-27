@@ -1,0 +1,24 @@
+sudo docker run -t -i bvlc/caffe:cpu /bin/bash
+
+  docker run 创建一个新的容器并运行一个命令
+  -t 分配一个（伪）tty (link is external)
+  -i 交互模式 (so we can interact with it)
+  bvlc/caffe:cpu 使用 bvlc/caffe:cpu 镜像创建容器
+  /bin/bash 运行命令 bash shell
+
+进入这个容器后，可以尝试下载mnist文件：
+  cd /opt/caffe/data/mnist/
+  ./get_mnist.sh
+  
+按ctrl+D 或 exit 退出当前容器
+想要返回刚才的容器，相继输入：
+  docker start container_ID  # docker start ：启动一个已经被停止的容器
+  docker attach container_ID  # docker attach :连接到正在运行中的容器
+  
+如果不是启动之前停止的容器，而是从镜像中再创建一个新容器，那么新容器里不会含有之前容器里的操作。
+如果想继承之前容器里的操作，需要从之前的容器里生成出一个新的镜像：docker commit(ex：docker commit c5f24e953610 mycaffe）
+如果不想丢掉容器里的数据，可以将主机与容器进行挂载：docker run -ti -v /home/elaine/dockerData:/dockerData bvlc/caffe:cpu  （-v 用于声明volume，主机和容器之间的数据交互通过volume来完成）
+
+
+docker ps：查看正在运行的容器 (-a 显示所有创建的容器）
+docker rm：删除容器

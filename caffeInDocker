@@ -22,3 +22,10 @@ sudo docker run -t -i bvlc/caffe:cpu /bin/bash
 
 docker ps：查看正在运行的容器 (-a 显示所有创建的容器）
 docker rm：删除容器
+
+docker配置nvidia API key：
+docker login nvcr.io
+
+Username: $oauthtoken
+Password: YTB1N3B1bjlsY3AxOTl0c3ZpazJuYmZwYnA6M2VmMzRiNjEtMzkwOS00ZmEyLWE1MzQtYjk4MWZmMTk1NjBi
+

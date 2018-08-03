@@ -1,19 +1,21 @@
 sudo docker run -t -i bvlc/caffe:cpu /bin/bash
 
-  docker run 创建一个新的容器并运行一个命令
-  -t 分配一个（伪）tty (link is external)
-  -i 交互模式 (so we can interact with it)
-  bvlc/caffe:cpu 使用 bvlc/caffe:cpu 镜像创建容器
-  /bin/bash 运行命令 bash shell
+    docker run 创建一个新的容器并运行一个命令
+    -t 分配一个（伪）tty (link is external)
+    -i 交互模式 (so we can interact with it)
+    bvlc/caffe:cpu 使用 bvlc/caffe:cpu 镜像创建容器
+    /bin/bash 运行命令 bash shell,表示载入容器后运行bash,docker中必须保持一个进程的运行,否则容器就会退出,这个就表示启动容器后启动bash.
+    如果添加了 --rm:表示退出容器后自动删除创建的容器(默认会保留这个容器,可以再次启动)
 
 进入这个容器后，可以尝试下载mnist文件：
-  cd /opt/caffe/data/mnist/
-  ./get_mnist.sh
+    cd /opt/caffe/data/mnist/
+    ./get_mnist.sh
   
 按ctrl+D 或 exit 退出当前容器
 想要返回刚才的容器，相继输入：
-  docker start container_ID  # docker start ：启动一个已经被停止的容器
-  docker attach container_ID  # docker attach :连接到正在运行中的容器
+    docker start container_ID  # docker start ：启动一个已经被停止的容器
+    docker attach container_ID  # docker attach :连接到正在运行中的容器
+    !!!!进入正在运行的容器内部exec比attach更好用,attach如果两台机器同时attach会出现命令冲突.
   
 如果不是启动之前停止的容器，而是从镜像中再创建一个新容器，那么新容器里不会含有之前容器里的操作。
 如果想继承之前容器里的操作，需要从之前的容器里生成出一个新的镜像：docker commit(ex：docker commit c5f24e953610 mycaffe）
@@ -22,6 +24,25 @@ sudo docker run -t -i bvlc/caffe:cpu /bin/bash
 
 docker ps：查看正在运行的容器 (-a 显示所有创建的容器）
 docker rm：删除容器
+
+
+Docker端口映射: 启动容器时,如果不配置宿主机器与虚拟机的端口映射,外部程序无法访问虚拟机,因为没有端口.
+端口映射指令:docker run -p ip:hostPort:containerPort redis
+    使用-p参数会分配宿主机的端口映射到虚拟机。 
+    IP表示主机的IP地址。 
+    hostPort表示宿主机的端口。 
+    containerPort表示虚拟机的端口。
+        补充:IP地址相当于一间房子,端口是门,一个IP地址的端口可以有65536（即：2^16）个之多,端口是通过端口号来标记的，端口号只有整数，范围是从0 到65535（2^16-1）
+    
+支持的格式有三种：
+    ip:hostPort:containerPort：映射指定地址的指定端口到虚拟机的指定端口（不常用） 
+    如：127.0.0.1:3306:3306，映射本机的3306端口到虚拟机的3306端口。 
+    ip::containerPort：映射指定地址的任意端口到虚拟机的指定端口。（不常用） 
+    如：127.0.0.1::3306，映射本机的3306端口到虚拟机的3306端口。 
+    hostPort:containerPort：映射本机的指定端口到虚拟机的指定端口。（常用） 
+    如：3306:3306，映射本机的3306端口到虚拟机的3306端口。
+使用docker ps命令查看,也可以使用docker port NAME查看端口映射情况。
+
 
 docker配置nvidia API key：
 docker login nvcr.io

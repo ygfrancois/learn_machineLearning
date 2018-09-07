@@ -1,6 +1,10 @@
-刚开始训练loss就是nan,原因很可能是因为使用了cross entropy时出现了log(0),需要加一个epsilon防止该情况出现
+刚开始训练loss就是nan,原因很可能是因为使用了cross entropy时出现了log(0),需要加一个epsilon防止该情况出现:
+loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=labels)) # 会有log(0)的问题
+改为:
+logits = tf.nn.log_softmax(logits)
+loss = -tf.reduce_mean(labels*logits)
 
-batch_size设置
+batch_size设置,可以先从128开始,然后根据结果以2倍往左右调
 
 构造graph/network时,如卷积层的创建时都需要给定参数的初始化方法(在tf.get_variable里),
 各种初始化方法: https://blog.csdn.net/FrankieHello/article/details/79781422
